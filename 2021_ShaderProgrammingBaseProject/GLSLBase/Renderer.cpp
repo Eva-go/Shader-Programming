@@ -59,6 +59,11 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 	glGenBuffers(1, &m_VBO); //ID만 만듬 텍스쳐 메모리는 할당되지않음
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(tempVertices), tempVertices, GL_STATIC_DRAW);
+
+	float tempVertices1[] = { 0.f,0.f,0.f,-1.f,0.f,0.f,-1.f,1.f,0.f };
+	glGenBuffers(1, &m_VBO1); //ID만 만듬 텍스쳐 메모리는 할당되지않음
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO1);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(tempVertices1), tempVertices1, GL_STATIC_DRAW);
 }
 
 void Renderer::CreateVertexBufferObjects()
@@ -304,14 +309,34 @@ void Renderer::Test()
 {
 	glUseProgram(m_SolidRectShader);
 
-	int attribPosition = glGetAttribLocation(m_SolidRectShader, "a_Position");
-	glEnableVertexAttribArray(attribPosition);
+	GLint VBOLocation = glGetAttribLocation(m_SolidRectShader, "a_Position");
 
-	//glBindBuffer(GL_ARRAY_BUFFER, m_VBORect);
+	glEnableVertexAttribArray(VBOLocation); //location 과 맞아야 한다.
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glVertexAttribPointer(attribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
+	glVertexAttribPointer(VBOLocation, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
+
+	GLint VBOLocation1 = glGetAttribLocation(m_SolidRectShader, "a_Position1");
+
+	glEnableVertexAttribArray(VBOLocation1); //location 과 맞아야 한다.
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO1);
+	glVertexAttribPointer(VBOLocation1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
+
+	static float gscale = 0.f;
+	GLint ScaleUniform = glGetUniformLocation(m_SolidRectShader, "u_Sclae");
+	glUniform1f(ScaleUniform, gscale);
+	GLint colorUniform = glGetUniformLocation(m_SolidRectShader, "u_Color");
+	glUniform4f(colorUniform, 1, 1, gscale, gscale);
+
+	GLint PositionUniform = glGetUniformLocation(m_SolidRectShader, "u_Position");
+	glUniform3f(PositionUniform, gscale, gscale,0);
 
 	glDrawArrays(GL_TRIANGLES, 0, 3);//start rendering ,pritimive
 
-	glDisableVertexAttribArray(attribPosition);
+	gscale += 0.001f;
+
+	if (gscale > 1.f)
+		gscale = 0.f;
+
+	glDisableVertexAttribArray(VBOLocation);
+	glDisableVertexAttribArray(VBOLocation1);
 }
