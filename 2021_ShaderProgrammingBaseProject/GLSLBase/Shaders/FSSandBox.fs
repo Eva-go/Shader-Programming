@@ -10,7 +10,7 @@ void main()
 {
 	vec4 color = vec4(0);
 	float tempLength = length(v_Color.rgb - Circle);
-	if(tempLength <0.5)
+	if(tempLength <0.5&&tempLength>0.49)
 	{
 		color =vec4(1,1,1,1);
 	}
