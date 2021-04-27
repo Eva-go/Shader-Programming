@@ -27,8 +27,8 @@ void RenderScene(void)
 
 	// Renderer Test
 	//g_Renderer->Test();
-	g_Renderer->Particle();
-
+	//g_Renderer->Particle();
+	g_Renderer->FSSandBox();
 	glutSwapBuffers();
 }
 
