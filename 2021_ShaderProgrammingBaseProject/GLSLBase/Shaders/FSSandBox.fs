@@ -7,6 +7,8 @@ varying vec4 v_Color;
 const vec3 Circle = vec3(0.5,0.5,0.0);
 const float PI = 3.141592;
 
+uniform vec3 u_Point;
+
 vec4 CenteredCircle()
 {
 	float count = 10.0;
@@ -17,17 +19,20 @@ vec4 CenteredCircle()
 	greyScale= pow(greyScale,width);
 	return vec4(greyScale);
 }
+
+vec4 IndicatePoint()
+{
+	vec4 returnColor = vec4(0);
+	float d = length(v_Color.rg - u_Point.xy);
+	if(d<u_Point.z)
+	{
+		returnColor = vec4(1);
+	}
+	return returnColor;
+}
+
 void main()
 {
-	/*vec4 color = vec4(0);
-	float tempLength = length(v_Color.rgb - Circle);
-	if(tempLength <0.5&&tempLength>0.49)
-	{
-		color =vec4(1,1,1,1);
-	}
-	else
-	{
-		color =vec4(0,0,0,0);
-	}*/
-	FragColor = CenteredCircle();
+	//FragColor = CenteredCircle();
+	FragColor=IndicatePoint();
 }

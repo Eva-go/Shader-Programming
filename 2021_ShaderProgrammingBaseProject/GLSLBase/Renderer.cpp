@@ -692,5 +692,9 @@ void Renderer::FSSandBox()
 	glEnableVertexAttribArray(attribPosLoc);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBOFSSandBox);
 	glVertexAttribPointer(attribPosLoc, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (GLvoid*)(0));
+
+	GLuint uniformPointLoc = glGetUniformLocation(shader, "u_Point");
+	glUniform3f(uniformPointLoc, 0.5f, 0.5f, 0.1f);
+
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
