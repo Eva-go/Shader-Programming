@@ -8,6 +8,7 @@ const vec3 Circle = vec3(0.5,0.5,0.0);
 const float PI = 3.141592;
 
 uniform vec3 u_Point;
+uniform vec3 u_Points[10];
 
 vec4 CenteredCircle()
 {
@@ -31,8 +32,23 @@ vec4 IndicatePoint()
 	return returnColor;
 }
 
+vec4 IndicatePoints()
+{
+	vec4 returnColor = vec4(1);
+	for(int i=0; i<10; i++)
+	{
+		float d = length(v_Color.rg - u_Points[i].xy);
+		if(d<u_Points[i].z)
+		{
+			returnColor = vec4(0);
+		}
+	}
+	return returnColor;
+}
+
 void main()
 {
 	//FragColor = CenteredCircle();
-	FragColor=IndicatePoint();
+	//FragColor=IndicatePoint();
+	FragColor=IndicatePoints();
 }
