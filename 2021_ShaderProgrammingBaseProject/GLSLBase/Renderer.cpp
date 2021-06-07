@@ -680,13 +680,29 @@ void Renderer::Particle()
 
 	glDrawArrays(GL_TRIANGLES, 0, m_VBOManyParticleCount);
 
-	g_Time += 0.00016f;
+	g_Time += 0.016f;
 }
+
+float g_points[] = {
+	(float)((float)rand() / (float)RAND_MAX),-0.5 * (float)((float)rand() / (float)RAND_MAX),0.01 * (float)((float)rand() / (float)RAND_MAX),
+	(float)((float)rand() / (float)RAND_MAX),-0.4 * (float)((float)rand() / (float)RAND_MAX),0.01 * (float)((float)rand() / (float)RAND_MAX),
+	(float)((float)rand() / (float)RAND_MAX),-0.3 * (float)((float)rand() / (float)RAND_MAX),0.01 * (float)((float)rand() / (float)RAND_MAX),
+	(float)((float)rand() / (float)RAND_MAX),-0.2 * (float)((float)rand() / (float)RAND_MAX),0.01 * (float)((float)rand() / (float)RAND_MAX),
+	(float)((float)rand() / (float)RAND_MAX),-0.1 * (float)((float)rand() / (float)RAND_MAX),0.01 * (float)((float)rand() / (float)RAND_MAX),
+	(float)((float)rand() / (float)RAND_MAX), 0.5 * (float)((float)rand() / (float)RAND_MAX), 0.01 * (float)((float)rand() / (float)RAND_MAX),
+	(float)((float)rand() / (float)RAND_MAX), 0.4 * (float)((float)rand() / (float)RAND_MAX), 0.01 * (float)((float)rand() / (float)RAND_MAX),
+	(float)((float)rand() / (float)RAND_MAX), 0.3 * (float)((float)rand() / (float)RAND_MAX), 0.01 * (float)((float)rand() / (float)RAND_MAX),
+	(float)((float)rand() / (float)RAND_MAX), 0.2 * (float)((float)rand() / (float)RAND_MAX), 0.01 * (float)((float)rand() / (float)RAND_MAX),
+	(float)((float)rand() / (float)RAND_MAX), 0.1 * (float)((float)rand() / (float)RAND_MAX), 0.01 * (float)((float)rand() / (float)RAND_MAX)
+};
 
 void Renderer::FSSandBox()
 {
 	GLuint shader = m_FSSandboxShader;
 	glUseProgram(shader); //shader program select
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	GLuint attribPosLoc = glGetAttribLocation(shader, "a_Position");
 	glEnableVertexAttribArray(attribPosLoc);
@@ -696,12 +712,16 @@ void Renderer::FSSandBox()
 	GLuint uniformPointLoc = glGetUniformLocation(shader, "u_Point");
 	glUniform3f(uniformPointLoc, 0.5f, 0.5f, 0.1f);
 
-	float points[] = { -0.5,-0.5,0.01,-0.4,-0.4,0.01, -0.3,-0.3,0.01, -0.2,-0.2,0.01, -0.1,-0.1,0.01,
-		 0.5, 0.5, 0.01, 0.4, 0.4, 0.01, 0.3, 0.3, 0.01, 0.2, 0.2, 0.01, 0.1, 0.1, 0.01 
-	};
+	GLuint uniformTimeLoc = glGetUniformLocation(shader, "u_Time");
+	glUniform1f(uniformTimeLoc, g_Time);
+
+
 
 	GLuint uniformPointsLoc = glGetUniformLocation(shader, "u_Points");
-	glUniform3fv(uniformPointsLoc, 10, points);
+	glUniform3fv(uniformPointsLoc, 10, g_points);
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glDisable(GL_BLEND);
+	g_Time += 0.00016f;
 }
