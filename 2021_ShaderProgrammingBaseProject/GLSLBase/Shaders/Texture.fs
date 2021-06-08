@@ -27,8 +27,27 @@ vec4 p2()
 	return returnColor;
 }
 
+vec4 p3()
+{
+	vec2 newTex = v_TexPos;
+	
+	if(newTex.y>=0.5)
+	{
+		newTex.x =(v_TexPos.x)*2+0.5;
+	}
+	
+	//newTex.y =v_TexPos.y;
+
+	else
+		newTex.x=v_TexPos.x*2;
+	newTex.y=v_TexPos.y*2;
+
+	vec4 returnColor = texture(u_TexSampler,newTex);
+	return returnColor;
+}
+
 void main()
 {
 	//FragColor = texture(u_TexSampler,v_TexPos);	
-	FragColor = p2();	
+	FragColor = p3();	
 }
