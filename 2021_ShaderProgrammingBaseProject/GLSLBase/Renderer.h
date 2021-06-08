@@ -74,5 +74,7 @@ private:
 	GLuint m_TextureCheckerBoard = 0;
 	GLuint m_SimpleTextureShader = 0;
 	GLuint m_VBORect_PosTex = 0;
+
+	GLuint m_TextureRGB = 0;
 };
 
